@@ -1,0 +1,132 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id         String   @id @default(uuid())
+  name       String
+  email      String   @unique
+  password   String
+  gender     String
+  avatar_img String
+  role       Role?    @default(USER)
+  is_active  Boolean? @default(true)
+
+  created_at DateTime? @default(now())
+  updated_at DateTime? @updatedAt
+  deleted_at DateTime? @default(now())
+
+  refreshTokens RefreshToken[]
+  passwordResetToken PasswordResetToken[]
+  accounts Accounts[]
+  categories Categories[]
+  records Records[]
+}
+
+enum Role {
+  ADMIN
+  USER
+}
+
+model RefreshToken {
+  id        String   @id @default(uuid())
+  token     String   @unique
+  user_id    String
+  expires_at DateTime
+  created_at DateTime @default(now())
+
+  user User @relation(fields: [user_id], references: [id], onDelete: Cascade)
+}
+
+model PasswordResetToken {
+  id         String   @id @default(uuid())
+  user_id     String
+  tokenHash  String
+  expires_at  DateTime
+  used       Boolean  @default(false)
+  created_at DateTime @default(now())
+
+  user User @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+  @@index([user_id])
+}
+
+model Accounts {
+  id         String   @id @default(uuid())
+  user_id     String
+  account_name String
+  account_type String
+  amount       Int?
+  is_active Boolean? @default(true)
+
+  user User @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+  created_at DateTime? @default(now())
+  updated_at DateTime? @updatedAt
+  deleted_at DateTime? @default(now())
+
+  records Records[]
+}
+
+model Categories {
+  id         String   @id @default(uuid())
+  user_id     String
+  category_name String
+  category_type String?
+  is_active Boolean? @default(true)
+
+  user User @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  
+  created_at DateTime? @default(now())
+  updated_at DateTime? @updatedAt
+  deleted_at DateTime? @default(now())
+
+  records Records[]
+
+  Records  RecordCategory[]
+}
+
+model Records {
+  id         String   @id @default(uuid())
+  user_id     String
+  account_id  String
+  category_id String
+  record_name String
+  record_type String
+  record_description String?
+  amount      Int
+  
+
+  user User @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  accounts Accounts @relation(fields: [account_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  categories Categories @relation(fields: [category_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+  Categories RecordCategory[]
+
+  created_at DateTime? @default(now())
+  updated_at DateTime? @updatedAt
+  deleted_at DateTime? @default(now())
+}
+
+model RecordCategory {
+  record_id   String
+  category_id String
+
+  record   Records    @relation(fields: [record_id], references: [id])
+  category Categories @relation(fields: [category_id], references: [id])
+
+  @@id([record_id, category_id])
+}
+
+
