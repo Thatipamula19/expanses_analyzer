@@ -56,7 +56,10 @@ export class UsersService {
     async getUser(user_id: string){
         try{
 
-            const user = await this.prismaService.user.findFirst({where: {id: user_id}});
+            const user = await this.prismaService.user.findUnique({where: {id: user_id}, include: {
+                categories: true,
+                records: true
+            }});
             if(!user){
                 throw new NotFoundException(`user is not found with the given user Id: ${user_id}`);                
             }

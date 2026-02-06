@@ -11,7 +11,15 @@ export class RecordsService {
     async getRecords(user_id: string) {
         try {
 
-            const records = await this.prismaService.records.findMany({ where: { user_id: user_id } });
+            const records = await this.prismaService.records.findMany({ where: { user_id: user_id }, 
+            include: {
+                Categories: {
+                    include: {
+                        category: true
+                    }
+                }
+            }
+            });
 
             if (records?.length < 0) {
                 throw new NotFoundException(`records not found with the given user id: ${user_id}`);
