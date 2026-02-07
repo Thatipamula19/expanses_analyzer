@@ -116,7 +116,8 @@ export class RecordsService {
                     record_name: updateRecordDto?.record_name ? updateRecordDto?.record_name : previous_record?.record_name,
                     record_type: updateRecordDto?.record_type ? updateRecordDto?.record_type : previous_record?.record_type,
                     record_description: updateRecordDto?.record_description ? updateRecordDto?.record_description : previous_record?.record_description,
-                    amount: updateRecordDto?.amount ? updateRecordDto?.amount : previous_record?.amount
+                    amount: updateRecordDto?.amount ? updateRecordDto?.amount : previous_record?.amount,
+                    avatar: updateRecordDto?.avatar ? updateRecordDto?.avatar : previous_record?.avatar
                 }
             })
 

@@ -43,4 +43,12 @@ export class UpdateRecordDto {
     @IsNumber({allowInfinity: false, allowNaN: false}, {message: "record amount should be numbers only"})
     @IsOptional()
     amount?: number;
+
+    @ApiProperty()
+    @ApiProperty({
+        description: "record avatar"
+    })
+    @IsString({ message: "record avatar should be string" })
+    @IsNotEmpty({ message: "record avatar should not be empty" })
+    avatar: string;
 }

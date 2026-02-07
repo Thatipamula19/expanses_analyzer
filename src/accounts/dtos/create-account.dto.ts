@@ -18,4 +18,12 @@ export class CreateAccountDto {
     @IsString({message: "account type should be string"})
     @IsNotEmpty({message: "account type should not be empty"})
     account_type: string;
+
+    @ApiProperty()
+    @ApiProperty({
+        description: "account avatar"
+    })
+    @IsString({ message: "account avatar should be string" })
+    @IsNotEmpty({ message: "account avatar should not be empty" })
+    avatar: string;
 }

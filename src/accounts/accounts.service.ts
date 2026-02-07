@@ -91,7 +91,8 @@ export class AccountsService {
             const updatedAccount = await this.prismaService.accounts.update({
                 where: { id: updateAccountDto?.account_id, user_id: user_id }, data: {
                     account_name: updateAccountDto?.account_name ? updateAccountDto?.account_name : account?.account_name,
-                    account_type: updateAccountDto?.account_type ? updateAccountDto?.account_type : account?.account_type
+                    account_type: updateAccountDto?.account_type ? updateAccountDto?.account_type : account?.account_type,
+                    avatar: updateAccountDto?.avatar ? updateAccountDto?.avatar : account?.avatar
                 }
             })
             return {

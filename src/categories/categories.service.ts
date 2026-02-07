@@ -82,7 +82,9 @@ export class CategoriesService {
                 where: { id: updateCategory?.category_id, user_id: user_id },
                 data: {
                     category_name: updateCategory?.category_name ? updateCategory?.category_name : category?.category_name,
-                    category_type: updateCategory?.category_type ? updateCategory?.category_type : category?.category_type
+                    category_type: updateCategory?.category_type ? updateCategory?.category_type : category?.category_type,
+                    budget_amount: updateCategory?.budget_amount ? updateCategory?.budget_amount : category?.budget_amount,
+                    avatar : updateCategory?.avatar ? updateCategory?.avatar : category?.avatar
                 }
             });
 

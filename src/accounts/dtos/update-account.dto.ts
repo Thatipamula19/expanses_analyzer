@@ -25,4 +25,13 @@ export class UpdateAccountDto {
     @IsString({ message: "account name is in string" })
     @IsNotEmpty({ message: "account name should not be empty" })
     account_type?: string;
+
+    @ApiProperty()
+    @ApiProperty({
+        description: "account avatar"
+    })
+    @IsOptional()
+    @IsString({ message: "account avatar should be string" })
+    @IsNotEmpty({ message: "account avatar should not be empty" })
+    avatar: string;
 }
