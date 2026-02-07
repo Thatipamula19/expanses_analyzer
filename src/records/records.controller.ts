@@ -1,5 +1,5 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
-import { ApiBearerAuth, ApiCreatedResponse, ApiOkResponse } from '@nestjs/swagger';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Query } from '@nestjs/common';
+import { ApiBearerAuth, ApiCreatedResponse, ApiOkResponse, ApiQuery } from '@nestjs/swagger';
 import { RecordsService } from './records.service';
 import { ActiveUser } from 'src/auth/decorators/active-user.decorator';
 import { CreateRecordDto } from './dtos/create-record.dto';
@@ -17,7 +17,14 @@ export class RecordsController {
         return await this.recordsService.getRecords(user_id);
     }
 
-    @Get(":record_id")
+    @Get("stats")
+    @ApiOkResponse({ description: "get stats" })
+    @ApiQuery({ name: 'date', required: false, example: '2026-02-07' })
+    async getStats(@ActiveUser("sub") user_id: string, @Query('date') date?: string) {
+        return await this.recordsService.getStatsRecords(user_id, date)
+    }
+
+    @Get("/:record_id")
     @ApiOkResponse({ description: "user record found" })
     async getRecord(@Param("record_id") record_id: string, @ActiveUser("sub") user_id: string) {
         return await this.recordsService.getRecord(record_id, user_id);
@@ -37,7 +44,7 @@ export class RecordsController {
 
     @Delete("delete")
     @ApiOkResponse({ description: "record is updated" })
-    async deleteRecord(@Body() deleteRecordDto: DeleteRecordDto, @ActiveUser("sub") user_id: string){
+    async deleteRecord(@Body() deleteRecordDto: DeleteRecordDto, @ActiveUser("sub") user_id: string) {
         return await this.recordsService.deleteRecord(deleteRecordDto, user_id);
     }
 }

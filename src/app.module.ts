@@ -11,10 +11,11 @@ import { EmailModule } from './email/email.module';
 import { AccountsModule } from './accounts/accounts.module';
 import { CategoriesModule } from './categories/categories.module';
 import { RecordsModule } from './records/records.module';
+import { CategoryBudgetModule } from './category_budget/category_budget.module';
 
 
 @Module({
-  imports: [PrismaModule, UsersModule, AuthModule, EmailModule, AccountsModule, CategoriesModule, RecordsModule],
+  imports: [PrismaModule, UsersModule, AuthModule, EmailModule, AccountsModule, CategoriesModule, RecordsModule, CategoryBudgetModule],
   controllers: [AppController],
   providers: [AppService, PrismaService,     {
       provide: APP_GUARD,
